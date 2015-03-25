@@ -2,6 +2,7 @@ package sql;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -46,6 +47,11 @@ public class Transaction
 				+ "num_receiver TEXT,"
 				+ "start_time DATETIME,"
 				+ "duration INT)";
+		
+		String sql_t_interventions = "create table IF NOT EXISTS t_intervention "
+				+ "(id INTEGER PRIMARY KEY AUTOINCREMENT,"
+				+ "num TEXT UNIQUE"
+				+ "user TEXT)";
 				
 		
 		// création de la table identification
@@ -53,8 +59,23 @@ public class Transaction
 		stat.execute(sql_t_identification);
 		// création de la able t_communication
 		stat.execute(sql_t_communication);
+		// créatyin de la table t_intervention
+		stat.execute(sql_t_interventions);
 				
 		
+	}
+	
+	public static void insertNewIntervention(String numero) throws ClassNotFoundException, SQLException
+	{
+		// insertion d'une nouvelle intervention
+		if(numero != null)
+		{
+			String sql = "insert into t_intervention (num) values (?)";
+			Connection c = Transaction.getCon();
+			PreparedStatement ps = c.prepareStatement(sql);
+			ps.setString(1, numero);
+			ps.executeUpdate();
+		}
 	}
 
 	public static Connection getCon() throws SQLException, ClassNotFoundException 
