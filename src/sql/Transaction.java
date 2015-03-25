@@ -5,12 +5,14 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import org.sqlite.SQLiteDataSource;
+
 public class Transaction 
 {
 	// connection
 	private static Connection con;
 	// name db
-	private static String db_name = "toto.db";
+	private static String db_name;
 	
 	public static void connect() throws ClassNotFoundException, SQLException
 	{
@@ -18,7 +20,7 @@ public class Transaction
 		Class.forName("org.sqlite.JDBC");
 		// chargement de la db
 		con = DriverManager.getConnection("jdbc:sqlite:" + db_name);
-		
+
 		Statement requete = con.createStatement();
 		
 		// evite la synchronisation qui ralenti le processus
