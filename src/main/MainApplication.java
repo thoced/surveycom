@@ -1,5 +1,7 @@
 package main;
 
+import gui.DialogIntervention;
+
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -27,6 +29,11 @@ public class MainApplication implements ActionListener
 	private JMenuItem menuNewDossier;
 	private JMenuItem mNewDossier;
 	private JMenuItem mOpenDossier;
+	private JMenu menuImporter;
+	private JMenuItem mRetroZoller;
+	private JMenu mIntervention;
+	private JMenuItem mGererInter;
+	private JMenuItem mNewInter;
 
 	/**
 	 * Launch the application.
@@ -80,6 +87,28 @@ public class MainApplication implements ActionListener
 		mFichier.add(mOpenDossier);
 		mOpenDossier.setActionCommand("OPENDOSSIER");
 		mOpenDossier.addActionListener(this);
+		
+		mIntervention = new JMenu("Interventions");
+		menuBar.add(mIntervention);
+		
+		mGererInter = new JMenuItem("Gérer les interventions");
+		mIntervention.add(mGererInter);
+		mGererInter.setActionCommand("GERERINTERVENTION");
+		mGererInter.addActionListener(this);
+		
+		mNewInter = new JMenuItem("Créer une intervention");
+		mIntervention.add(mNewInter);
+		mNewInter.setActionCommand("NEWINTERVENTION");
+		mNewInter.addActionListener(this);
+		
+		menuImporter = new JMenu("Importer");
+		menuBar.add(menuImporter);
+		
+		mRetroZoller = new JMenuItem("Retro Zoller (Mobistar)");
+		menuImporter.add(mRetroZoller);
+		mRetroZoller.setActionCommand("RETROMOBISTAR");
+		mRetroZoller.addActionListener(this);
+	
 	
 	}
 
@@ -135,6 +164,23 @@ public class MainApplication implements ActionListener
 							}
 							break;
 		}
+		
+		case "NEWINTERVENTION":  // ouverture de la boite dialogue de création d'une intervention
+								DialogIntervention di = new DialogIntervention(null,"Intervention",true);
+								di.setVisible(true);
+								if(di.getNumero() != null)
+								{
+									try 
+									{
+										Transaction.insertNewIntervention(di.getNumero());
+										
+									} catch (ClassNotFoundException
+											| SQLException e) {
+										// TODO Auto-generated catch block
+										JOptionPane.showMessageDialog(null, e.getMessage());
+									}
+								}
+								break;
 		}
 	}
 
