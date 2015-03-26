@@ -24,12 +24,19 @@ public class DialogIntervention extends JDialog implements ActionListener{
 	private final JPanel contentPanel = new JPanel();
 	private JTextField tNumero;
 	private String numero;
+	private String user;
+	private JTextField tUser;
 
 	
 	
 	public String getNumero()
 	{
 		return this.numero;
+	}
+	
+	public String getUser()
+	{
+		return this.user;
 	}
 
 
@@ -38,13 +45,15 @@ public class DialogIntervention extends JDialog implements ActionListener{
 		
 		super(f,titre,modal);
 		
-		this.setSize(800, 600);
+		this.setSize(640, 480);
+		
+		this.setLocationRelativeTo(null);
 		
 		getContentPane().setLayout(new FormLayout(new ColumnSpec[] {
-				ColumnSpec.decode("798px"),},
+				ColumnSpec.decode("center:636px"),},
 			new RowSpec[] {
-				RowSpec.decode("536px"),
-				RowSpec.decode("35px"),}));
+				RowSpec.decode("272px"),
+				RowSpec.decode("top:198px"),}));
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, "1, 1, fill, fill");
 		contentPanel.setLayout(new FormLayout(new ColumnSpec[] {
@@ -55,8 +64,10 @@ public class DialogIntervention extends JDialog implements ActionListener{
 				FormFactory.RELATED_GAP_COLSPEC,
 				FormFactory.DEFAULT_COLSPEC,
 				FormFactory.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("left:max(186dlu;default)"),},
+				ColumnSpec.decode("center:max(167dlu;default)"),},
 			new RowSpec[] {
+				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,
 				FormFactory.RELATED_GAP_ROWSPEC,
 				FormFactory.DEFAULT_ROWSPEC,
 				FormFactory.RELATED_GAP_ROWSPEC,
@@ -78,11 +89,18 @@ public class DialogIntervention extends JDialog implements ActionListener{
 			tNumero = new JTextField();
 			contentPanel.add(tNumero, "8, 10, fill, default");
 			tNumero.setColumns(10);
+			
+			JLabel lblNewLabel_1 = new JLabel("Utilisateur:");
+			contentPanel.add(lblNewLabel_1, "4, 14");
+			
+			tUser = new JTextField();
+			contentPanel.add(tUser, "8, 14, fill, top");
+			tUser.setColumns(10);
 		
 		
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
-			getContentPane().add(buttonPane, "1, 2, fill, top");
+			getContentPane().add(buttonPane, "1, 2, default, bottom");
 			
 				JButton okButton = new JButton("OK");
 				okButton.setActionCommand("OK");
@@ -105,7 +123,9 @@ public class DialogIntervention extends JDialog implements ActionListener{
 	{
 		switch(arg0.getActionCommand())
 		{
-		case "OK" : this.numero = this.tNumero.getText();break;
+		case "OK" : 	this.numero = this.tNumero.getText();
+						this.user = this.tUser.getText();
+						break;
 	
 		}
 		
