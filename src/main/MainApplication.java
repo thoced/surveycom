@@ -1,6 +1,8 @@
 package main;
 
 import gui.DialogIntervention;
+import gui.DialogRetroAdd;
+import gui.DialogVisuIntervention;
 
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
@@ -104,9 +106,9 @@ public class MainApplication implements ActionListener
 		menuImporter = new JMenu("Importer");
 		menuBar.add(menuImporter);
 		
-		mRetroZoller = new JMenuItem("Retro Zoller (Mobistar)");
+		mRetroZoller = new JMenuItem("Retro Zoller");
 		menuImporter.add(mRetroZoller);
-		mRetroZoller.setActionCommand("RETROMOBISTAR");
+		mRetroZoller.setActionCommand("RETROADD");
 		mRetroZoller.addActionListener(this);
 	
 	
@@ -172,7 +174,7 @@ public class MainApplication implements ActionListener
 								{
 									try 
 									{
-										Transaction.insertNewIntervention(di.getNumero());
+										Transaction.insertNewIntervention(di.getNumero(),di.getUser());
 										
 									} catch (ClassNotFoundException
 											| SQLException e) {
@@ -181,6 +183,16 @@ public class MainApplication implements ActionListener
 									}
 								}
 								break;
+								
+		case "GERERINTERVENTION":  // visualisation des interventions
+									DialogVisuIntervention dvi = new DialogVisuIntervention(null,"Visualisation des interventions",true);
+									dvi.setVisible(true);
+									break;
+									
+		case "RETROADD": // ajout d'un retro zoller
+									DialogRetroAdd dra = new DialogRetroAdd(null,"Ajout d'un retro-zoller",true);
+									dra.setVisible(true);
+									break;
 		}
 	}
 
