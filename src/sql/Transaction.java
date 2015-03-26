@@ -3,6 +3,7 @@ package sql;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -26,6 +27,8 @@ public class Transaction
 		
 		// evite la synchronisation qui ralenti le processus
 		requete.executeUpdate("PRAGMA synchronous = OFF;");
+		// active les foreign key
+		requete.executeUpdate("PRAGMA foreign_key = ON;");
 	}
 	
 	// création des tables
@@ -50,8 +53,14 @@ public class Transaction
 		
 		String sql_t_interventions = "create table IF NOT EXISTS t_intervention "
 				+ "(id INTEGER PRIMARY KEY AUTOINCREMENT,"
-				+ "num TEXT UNIQUE"
+				+ "num TEXT UNIQUE,"
 				+ "user TEXT)";
+		
+		String sql_t_fichiers = "create table IF NOT EXISTS t_fichiers "
+				+ "(id INTEGER PRIMARY KEY AUTOINCREMENT,"
+				+ "path TEXT,"
+				+ "ref_inter INTEGER,"
+				+ "FOREIGN KEY(ref_inter) REFERENCES t_intervention(id))";
 				
 		
 		// création de la table identification
@@ -61,19 +70,42 @@ public class Transaction
 		stat.execute(sql_t_communication);
 		// créatyin de la table t_intervention
 		stat.execute(sql_t_interventions);
+		// création de la table t_fichier
+		stat.execute(sql_t_fichiers);
 				
 		
 	}
 	
-	public static void insertNewIntervention(String numero) throws ClassNotFoundException, SQLException
+	public static String getListIntervention() throws ClassNotFoundException, SQLException
+	{
+		String sql = "select num,user from t_intervention";
+		Statement ps = Transaction.getCon().createStatement();
+		ResultSet result = ps.executeQuery(sql);
+		
+		String returnString = new String();
+		
+		while(result.next())
+		{
+			String num  = result.getString("num");
+			String user = result.getString("user");
+			String chaine = String.format("%s          %s\r",num,user);
+			returnString = returnString + chaine;
+		}
+		
+		return returnString;
+	
+	}
+	
+	public static void insertNewIntervention(String numero,String user) throws ClassNotFoundException, SQLException
 	{
 		// insertion d'une nouvelle intervention
 		if(numero != null)
 		{
-			String sql = "insert into t_intervention (num) values (?)";
+			String sql = "insert into t_intervention (num,user) values (?,?)";
 			Connection c = Transaction.getCon();
 			PreparedStatement ps = c.prepareStatement(sql);
 			ps.setString(1, numero);
+			ps.setString(2, user);
 			ps.executeUpdate();
 		}
 	}
