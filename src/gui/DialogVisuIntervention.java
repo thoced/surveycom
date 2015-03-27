@@ -76,24 +76,7 @@ public class DialogVisuIntervention extends JDialog implements WindowListener
 	@Override
 	public void windowOpened(WindowEvent arg0)
 	{
-		// la fenetre s'ouvre on rafraichit la liste
-		try 
-		{
-			String listInter = Transaction.getListIntervention();
-			String[] inter = listInter.split("\r");
-			// on crée le 
-			DefaultListModel mod = new DefaultListModel();
-			for(String s : inter)
-			{
-				mod.addElement(s);
-			}
-			
-			this.list.setModel(mod);
-			
-		} catch (ClassNotFoundException | SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 		
 	}
 }

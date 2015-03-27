@@ -1,11 +1,15 @@
 package sql;
 
+import gui.Intervention;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.sqlite.SQLiteDataSource;
 
@@ -59,8 +63,8 @@ public class Transaction
 		String sql_t_fichiers = "create table IF NOT EXISTS t_fichiers "
 				+ "(id INTEGER PRIMARY KEY AUTOINCREMENT,"
 				+ "path TEXT,"
-				+ "ref_inter INTEGER,"
-				+ "FOREIGN KEY(ref_inter) REFERENCES t_intervention(id))";
+				+ "num_ref TEXT,"
+				+ "FOREIGN KEY(num_ref) REFERENCES t_intervention(num))";
 				
 		
 		// création de la table identification
@@ -76,23 +80,36 @@ public class Transaction
 		
 	}
 	
-	public static String getListIntervention() throws ClassNotFoundException, SQLException
+	// ajout du fichier importer dans la table
+	// path : nom du fichier
+	// num  : numero d'intervention associé
+	public static void insertFile(String path,String num)
 	{
-		String sql = "select num,user from t_intervention";
+		String sql = "insert into t_fichiers (path,ref_inter) values (?,?)";
+		
+		
+	}
+	
+	public static List<Intervention> getListIntervention() throws ClassNotFoundException, SQLException
+	{
+		String sql = "select id,num,user from t_intervention";
 		Statement ps = Transaction.getCon().createStatement();
 		ResultSet result = ps.executeQuery(sql);
 		
-		String returnString = new String();
+		List<Intervention> list = new ArrayList<Intervention>();
 		
 		while(result.next())
 		{
-			String num  = result.getString("num");
-			String user = result.getString("user");
-			String chaine = String.format("%s          %s\r",num,user);
-			returnString = returnString + chaine;
+			Intervention i = new Intervention();
+			i.setId(result.getInt("id"));
+			i.setNum(result.getString("num"));
+			i.setUser(result.getString("user"));
+			list.add(i);
+			
 		}
 		
-		return returnString;
+		
+		return list;
 	
 	}
 	
