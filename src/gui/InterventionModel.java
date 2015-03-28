@@ -2,29 +2,51 @@ package gui;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 
 import javax.swing.table.DefaultTableModel;
 
 public class InterventionModel extends DefaultTableModel 
 {
-	private List<Intervention> listIntervention;
+	private String[] nameColumns = {"id","numéro","utilisateur"};
+	
+//	private List<Intervention> listIntervention;
+	
+	private Vector<Intervention> listIntervention;
+	
+	
 
 	public InterventionModel()
 	{
-		this.listIntervention = new ArrayList<Intervention>();
+		this.listIntervention = new Vector<Intervention>();
+		
 	}
 	
 	
+	
+	
+	@Override
+	public Vector getDataVector() {
+		// TODO Auto-generated method stub
+		return this.listIntervention;
+	}
+
+
+
+
 	public int getColumnCount() {
 		// TODO Auto-generated method stub
 		return 3;
 	}
 
 	
+
 	public int getRowCount() 
 	{
 		// TODO Auto-generated method stub
-		if(this.listIntervention == null) this.listIntervention = new ArrayList<Intervention>();
+		if(this.listIntervention == null)
+			this.listIntervention = new Vector<Intervention>();
+		
 			return this.listIntervention.size();
 	}
 
@@ -53,16 +75,7 @@ public class InterventionModel extends DefaultTableModel
 	
 	public String getColumnName(int column) {
 		// TODO Auto-generated method stub
-		switch(column)
-		{
-		case 0 : return "id";
-		
-		case 1 : return "num";
-		
-		case 2 : return "user";
-		
-		default: return "";
-		}
+		return this.nameColumns[column];
 	}
 	
 	

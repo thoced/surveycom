@@ -145,9 +145,17 @@ public class DialogRetroAdd extends JDialog implements WindowListener,ActionList
 							 // on importe le fichier
 							 try 
 							 {
+								 // on récupère l'intervention sélectionné
+								int row = this.table.getSelectedRow();
+								if(row < 0)
+								{
+									JOptionPane.showMessageDialog(null, "Veuillez sélectionner une intervention !");
+									return;
+								}
+								// on récupère le numero de communication de l'intervention sélectionné
+								String num = (String) this.table.getModel().getValueAt(row, 1);
 								 // on ajoute le nom du fichier dans la table
-								 
-								 
+								Transaction.insertFile(jfc.getSelectedFile().getName(), num);
 								 // importation du fichier mobistar
 								MobistarZollerFile mzf = new MobistarZollerFile(jfc.getSelectedFile());
 								// affichage de l'information de fin

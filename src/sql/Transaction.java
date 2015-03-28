@@ -52,7 +52,17 @@ public class Transaction
 				+ "(id INTEGER PRIMARY KEY AUTOINCREMENT,"
 				+ "num_caller TEXT,"
 				+ "num_receiver TEXT,"
-				+ "start_time DATETIME,"
+				+ "imsi_caller TEXT,"
+				+ "imsi_receiver TEXT,"
+				+ "imei_caller TEXT,"
+				+ "imei_receiver TEXT,"
+				+ "operator_caller TEXT,"
+				+ "operator_receiver TEXT,"
+				+ "bts_adress_caller TEXT,"
+				+ "bts_adress_receiver TEXT,"
+				+ "forward TEXT,"
+				+ "roaming TEXT,"
+				+ "start_time DATE,"
 				+ "duration INT)";
 		
 		String sql_t_interventions = "create table IF NOT EXISTS t_intervention "
@@ -83,9 +93,13 @@ public class Transaction
 	// ajout du fichier importer dans la table
 	// path : nom du fichier
 	// num  : numero d'intervention associé
-	public static void insertFile(String path,String num)
+	public static void insertFile(String path,String num) throws ClassNotFoundException, SQLException
 	{
-		String sql = "insert into t_fichiers (path,ref_inter) values (?,?)";
+		String sql = "insert into t_fichiers (path,num_ref) values (?,?)";
+		PreparedStatement ps = Transaction.getCon().prepareStatement(sql);
+		ps.setString(1, path);
+		ps.setString(2, num);
+		ps.executeUpdate();
 		
 		
 	}

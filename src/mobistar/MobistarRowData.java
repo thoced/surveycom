@@ -12,7 +12,7 @@ import sql.Transaction;
 
 public class MobistarRowData
 {
-	private Cell[] rowData = new Cell[31]; 
+	private Cell[] rowData = new Cell[32]; 
 	
 	private Date start_session; 	// 0
 	private Date end_session;  		// 1
@@ -52,10 +52,10 @@ public class MobistarRowData
 	
 	public MobistarRowData(Row r)
 	{
-		// on extrait les cellules  (ind 3 à 34)
+		// on extrait les cellules  (ind 3 à 35)
 		
 				
-		for(int ind = 3,i =0 ;ind < 34 ;ind ++,i++)
+		for(int ind = 3,i =0 ;ind < 35 ;ind ++,i++)
 		{
 			if(r.getCell(ind) != null)
 			{
@@ -66,8 +66,12 @@ public class MobistarRowData
 				
 			}
 		}
+		
+		this.rowData[31].setCellType(Cell.CELL_TYPE_STRING);
 			
 	}
+	
+	
 	
 	public String extract(Cell c)
 	{
@@ -88,6 +92,8 @@ public class MobistarRowData
 		// on nettoie la value en enlevement le signe '
 		value = value.replace("'", "");
 		
+		
+		
 		return value;
 	}
 	
@@ -100,18 +106,34 @@ public class MobistarRowData
 		{
 			// si le sens de la communication est vers le B
 			
-			String sql = "insert into t_communication (num_caller,num_receiver,start_time,duration) values "
-					+ "(?,?,?,?)";
+			String sql = "insert into t_communication (num_caller,num_receiver,start_time,duration,imsi_caller,imsi_receiver,imei_caller,imei_receiver,"
+					+ "operator_caller,operator_receiver,bts_adress_caller,bts_adress_receiver,forward,roaming) values "
+					+ "(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 			try
 			{
+				
+				
+				
 				PreparedStatement ps = Transaction.getCon().prepareStatement(sql);
 				
 				ps.setString(1, this.extract(this.rowData[2])); // num_caller
 				ps.setString(2, this.extract(this.rowData[16])); // num_receiver
-				ps.setString(3, this.extract(this.rowData[0])); // start_time
+				ps.setDate(3,new java.sql.Date(this.rowData[0].getDateCellValue().getTime()));  // start_time
 				ps.setString(4, this.extract(this.rowData[26])); // duration
+				ps.setString(5, this.extract(this.rowData[3])); // imsi caller
+				ps.setString(6, this.extract(this.rowData[17]));// imsi_receiver
+				ps.setString(7, this.extract(this.rowData[4])); // imei_caller
+				ps.setString(8, this.extract(this.rowData[18]));// imei_receiver
+				ps.setString(9, this.extract(this.rowData[5]));// operator_caller
+				ps.setString(10, this.extract(this.rowData[19]));// operator_receiver
+				ps.setString(11, this.extract(this.rowData[12]));// bts_adress_caller
+				//ps.setString(12, this.extract(this.rowData[12]));// bts_adress_receiver il n'y en pas pour mobistar
+				ps.setString(13, this.extract(this.rowData[30]));// forward
+				ps.setString(14, this.extract(this.rowData[31]));// roaming
 				
 				ps.executeUpdate();
+				
+				
 				
 			}
 			catch(SQLException | ClassNotFoundException e){}
@@ -120,16 +142,27 @@ public class MobistarRowData
 		{
 			// si le sens de la communication est vers le A
 			
-				String sql = "insert into t_communication (num_caller,num_receiver,start_time,duration) values "
-								+ "(?,?,?,?)";
+			String sql = "insert into t_communication (num_caller,num_receiver,start_time,duration,imsi_caller,imsi_receiver,imei_caller,imei_receiver,"
+					+ "operator_caller,operator_receiver,bts_adress_caller,bts_adress_receiver,forward,roaming) values "
+					+ "(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 				try
 				{
 					PreparedStatement ps = Transaction.getCon().prepareStatement(sql);
 							
 					ps.setString(1, this.extract(this.rowData[16])); // num_caller
 					ps.setString(2, this.extract(this.rowData[2])); // num_receiver
-					ps.setString(3, this.extract(this.rowData[0])); // start_time
+					ps.setDate(3,new java.sql.Date(this.rowData[0].getDateCellValue().getTime()));  // start_time
 					ps.setString(4, this.extract(this.rowData[26])); // duration
+					ps.setString(5, this.extract(this.rowData[17])); // imsi caller
+					ps.setString(6, this.extract(this.rowData[3]));// imsi_receiver
+					ps.setString(7, this.extract(this.rowData[18])); // imei_caller
+					ps.setString(8, this.extract(this.rowData[4]));// imei_receiver
+					ps.setString(9, this.extract(this.rowData[19]));// operator_caller
+					ps.setString(10, this.extract(this.rowData[5]));// operator_receiver
+					ps.setString(12, this.extract(this.rowData[12]));// bts_adress_receiver
+					//ps.setString(11, this.extract(this.rowData[12]));// bts_adress_caller il n'y en pas pour mobistar
+					ps.setString(13, this.extract(this.rowData[30]));// forward
+					ps.setString(14, this.extract(this.rowData[31]));// roaming
 							
 					ps.executeUpdate();
 							
