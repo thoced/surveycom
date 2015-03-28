@@ -2,6 +2,7 @@ package main;
 
 import gui.DialogIntervention;
 import gui.DialogRetroAdd;
+import gui.DialogRetroAnalyse;
 import gui.DialogVisuIntervention;
 
 import java.awt.EventQueue;
@@ -10,6 +11,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.text.ParseException;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -36,6 +38,8 @@ public class MainApplication implements ActionListener
 	private JMenu mIntervention;
 	private JMenuItem mGererInter;
 	private JMenuItem mNewInter;
+	private JMenu mAnalyser;
+	private JMenuItem mRetroAnalyse;
 
 	/**
 	 * Launch the application.
@@ -110,6 +114,16 @@ public class MainApplication implements ActionListener
 		menuImporter.add(mRetroZoller);
 		mRetroZoller.setActionCommand("RETROADD");
 		mRetroZoller.addActionListener(this);
+		
+		mAnalyser = new JMenu("Analyse");
+		menuBar.add(mAnalyser);
+		
+		// Analyse rétro
+		mRetroAnalyse = new JMenuItem("Retro");
+		mRetroAnalyse.setActionCommand("RETROANALYSE");
+		mRetroAnalyse.addActionListener(this);
+		mAnalyser.add(mRetroAnalyse);
+	
 	
 	
 	}
@@ -192,6 +206,18 @@ public class MainApplication implements ActionListener
 		case "RETROADD": // ajout d'un retro zoller
 									DialogRetroAdd dra = new DialogRetroAdd(null,"Ajout d'un retro-zoller",true);
 									dra.setVisible(true);
+									break;
+									
+		case "RETROANALYSE": // dialog de l'analyse retro
+									DialogRetroAnalyse dr = null;
+									try 
+									{
+										dr = new DialogRetroAnalyse(null,"Analyse retro-zoller",true);
+									} catch (ParseException e) {
+										// TODO Auto-generated catch block
+										JOptionPane.showMessageDialog(null, e.getMessage());
+									}
+									dr.setVisible(true);
 									break;
 		}
 	}
