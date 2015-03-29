@@ -25,10 +25,19 @@ import javax.swing.JOptionPane;
 
 import sql.Transaction;
 
+import javax.swing.JLabel;
+
+import java.awt.BorderLayout;
+
+import javax.swing.ImageIcon;
+import javax.swing.SwingConstants;
+
+import documents.DocRetroZoller;
+
 public class MainApplication implements ActionListener
 {
 
-	private JFrame frame;
+	private JFrame frmPhoneSurveyV;
 	private JMenuItem mntmNewMenuItem;
 	private JMenuItem menuNewDossier;
 	private JMenuItem mNewDossier;
@@ -40,6 +49,7 @@ public class MainApplication implements ActionListener
 	private JMenuItem mNewInter;
 	private JMenu mAnalyser;
 	private JMenuItem mRetroAnalyse;
+	private JLabel lblNewLabel;
 
 	/**
 	 * Launch the application.
@@ -51,7 +61,7 @@ public class MainApplication implements ActionListener
 				try 
 				{
 					MainApplication window = new MainApplication();
-					window.frame.setVisible(true);
+					window.frmPhoneSurveyV.setVisible(true);
 					
 					
 				} catch (Exception e) {
@@ -74,12 +84,13 @@ public class MainApplication implements ActionListener
 	 */
 	private void initialize() 
 	{
-		frame = new JFrame();
-		frame.setSize(1024, 768);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmPhoneSurveyV = new JFrame();
+		frmPhoneSurveyV.setTitle("Phone Survey V 0.1 Alpha");
+		frmPhoneSurveyV.setSize(1024, 768);
+		frmPhoneSurveyV.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JMenuBar menuBar = new JMenuBar();
-		frame.setJMenuBar(menuBar);
+		frmPhoneSurveyV.setJMenuBar(menuBar);
 		
 		JMenu mFichier = new JMenu("Fichier");
 		menuBar.add(mFichier);
@@ -123,8 +134,14 @@ public class MainApplication implements ActionListener
 		mRetroAnalyse.setActionCommand("RETROANALYSE");
 		mRetroAnalyse.addActionListener(this);
 		mAnalyser.add(mRetroAnalyse);
+		frmPhoneSurveyV.getContentPane().setLayout(new BorderLayout(0, 0));
+		
+		lblNewLabel = new JLabel("");
+		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel.setIcon(new ImageIcon("/home/thonon/workspaceFX/AnalyserPhoobs/images/logo.png"));
+		frmPhoneSurveyV.getContentPane().add(lblNewLabel);
 	
-	
+		
 	
 	}
 

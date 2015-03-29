@@ -3,25 +3,37 @@ package gui;
 import java.awt.Frame;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 
 import javax.swing.JDialog;
 import javax.swing.JFormattedTextField;
+import javax.swing.JOptionPane;
 import javax.swing.text.MaskFormatter;
 
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.IOException;
 
 import javax.swing.JComboBox;
 
+import code.Data;
 import code.RetroAnalyseCode;
+
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
+import javax.swing.JButton;
 
-public class DialogRetroAnalyse extends JDialog implements WindowListener
+import documents.DocRetroZoller;
+import javax.swing.JTextPane;
+
+public class DialogRetroAnalyse extends JDialog implements WindowListener,ActionListener
 {
 	private JFormattedTextField tDateStart;
 	private JFormattedTextField tHeureStart;
@@ -30,6 +42,7 @@ public class DialogRetroAnalyse extends JDialog implements WindowListener
 	private JComboBox cListNumero;
 	private JPanel panelDate;
 	private JPanel panelNumero;
+	private JButton bInOut;
 
 	public DialogRetroAnalyse(Frame arg0, String arg1, boolean arg2) throws ParseException 
 	{
@@ -88,6 +101,12 @@ public class DialogRetroAnalyse extends JDialog implements WindowListener
 		panelNumero.setBorder(new TitledBorder(null, "Analyser \u00E0 partir de", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		panelNumero.setBounds(12, 144, 475, 103);
 		getContentPane().add(panelNumero);
+		
+		bInOut = new JButton("In Out");
+		bInOut.setActionCommand("INOUT");
+		bInOut.addActionListener(this);
+		bInOut.setBounds(12, 263, 117, 25);
+		getContentPane().add(bInOut);
 		
 		this.addWindowListener(this);
 	}
@@ -149,6 +168,35 @@ public class DialogRetroAnalyse extends JDialog implements WindowListener
 			}
 			
 		
+		
+	}
+
+
+
+	@Override
+	public void actionPerformed(ActionEvent arg0) 
+	{
+		switch(arg0.getActionCommand())
+		{
+		case "INOUT":
+			try 
+			{
+				// on lance la procédure de In Out
+				Vector v = RetroAnalyseCode.getInOut((String)cListNumero.getSelectedItem());
+				// on lance la génération du document
+				DocRetroZoller zoller = new DocRetroZoller(v,(String)cListNumero.getSelectedItem());
+					
+			} catch (ClassNotFoundException | SQLException e) 
+			{
+				// TODO Auto-generated catch block
+				JOptionPane.showMessageDialog(null, e.getMessage());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				JOptionPane.showMessageDialog(null, e.getMessage());
+			}
+			break;
+		}
+
 		
 	}
 }

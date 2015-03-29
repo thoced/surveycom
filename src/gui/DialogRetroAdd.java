@@ -27,6 +27,7 @@ import mobistar.MobistarZollerFile;
 
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import java.awt.Color;
 
 public class DialogRetroAdd extends JDialog implements WindowListener,ActionListener
 {
@@ -56,19 +57,22 @@ public class DialogRetroAdd extends JDialog implements WindowListener,ActionList
 		scrollPane.setViewportView(table);
 		
 		bMobistar = new JButton("Mobistar");
+		bMobistar.setBackground(Color.PINK);
 		bMobistar.setBounds(12, 304, 140, 115);
 		bMobistar.setActionCommand("MOBISTAR");
 		bMobistar.addActionListener(this);
 		getContentPane().add(bMobistar);
 		
 		bProximus = new JButton("Proximus");
-		bProximus.setBounds(183, 304, 140, 115);
+		bProximus.setBackground(Color.PINK);
+		bProximus.setBounds(196, 304, 140, 115);
 		bProximus.setActionCommand("PROXIMUS");
 		bProximus.addActionListener(this);
 		getContentPane().add(bProximus);
 		
 		bBase = new JButton("Base");
-		bBase.setBounds(359, 304, 140, 115);
+		bBase.setBackground(Color.PINK);
+		bBase.setBounds(383, 304, 140, 115);
 		bBase.setActionCommand("BASE");
 		bBase.addActionListener(this);
 		
