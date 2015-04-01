@@ -49,7 +49,7 @@ public class MainApplication implements ActionListener
 	private JMenuItem mNewInter;
 	private JMenu mAnalyser;
 	private JMenuItem mRetroAnalyse;
-	private JLabel lblNewLabel;
+	private JLabel labelLogo;
 
 	/**
 	 * Launch the application.
@@ -136,10 +136,10 @@ public class MainApplication implements ActionListener
 		mAnalyser.add(mRetroAnalyse);
 		frmPhoneSurveyV.getContentPane().setLayout(new BorderLayout(0, 0));
 		
-		lblNewLabel = new JLabel("");
-		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setIcon(new ImageIcon("/home/thonon/workspaceFX/AnalyserPhoobs/images/logo.png"));
-		frmPhoneSurveyV.getContentPane().add(lblNewLabel);
+		labelLogo = new JLabel("");
+		labelLogo.setHorizontalAlignment(SwingConstants.CENTER);
+		labelLogo.setIcon(new ImageIcon(MainApplication.class.getResource("/images/logo.png")));
+		frmPhoneSurveyV.getContentPane().add(labelLogo);
 	
 		
 	

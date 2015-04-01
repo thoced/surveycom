@@ -24,6 +24,7 @@ import java.io.IOException;
 import javax.swing.JComboBox;
 
 import code.Data;
+import code.DateHeureException;
 import code.RetroAnalyseCode;
 
 import javax.swing.JPanel;
@@ -31,6 +32,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.JButton;
 
 import documents.DocRetroZoller;
+
 import javax.swing.JTextPane;
 
 public class DialogRetroAnalyse extends JDialog implements WindowListener,ActionListener
@@ -56,17 +58,17 @@ public class DialogRetroAnalyse extends JDialog implements WindowListener,Action
 		
 		// date de debut de recherche
 		tDateStart = new JFormattedTextField();
-		tDateStart.setFont(new Font("Dialog", Font.PLAIN, 18));
+		tDateStart.setFont(new Font("Dialog", Font.PLAIN, 15));
 		tDateStart.setColumns(10);
 		MaskFormatter formatter = new MaskFormatter("##/##/####");
 		formatter.install(tDateStart);
-		tDateStart.setBounds(35, 31, 88, 19);
+		tDateStart.setBounds(35, 31, 94, 19);
 		getContentPane().add(tDateStart);
 		
 		// heure de début de recherche
 		tHeureStart = new JFormattedTextField();
-		tHeureStart.setFont(new Font("Dialog", Font.PLAIN, 18));
-		tHeureStart.setBounds(35, 68, 53, 19);
+		tHeureStart.setFont(new Font("Dialog", Font.PLAIN, 15));
+		tHeureStart.setBounds(35, 68, 64, 19);
 		tHeureStart.setColumns(5);
 		MaskFormatter formH = new MaskFormatter("##:##");
 		formH.install(tHeureStart);
@@ -75,16 +77,18 @@ public class DialogRetroAnalyse extends JDialog implements WindowListener,Action
 		
 		// Date de fin
 		tDateEnd = new JFormattedTextField();
-		tDateEnd.setFont(new Font("Dialog", Font.PLAIN, 18));
-		tDateEnd.setBounds(202, 33, 88, 19);
-		formatter.install(tDateEnd);
+		tDateEnd.setFont(new Font("Dialog", Font.PLAIN, 15));
+		tDateEnd.setBounds(202, 33, 94, 19);
+		MaskFormatter formDateEnd = new MaskFormatter("##/##/####");
+		formDateEnd.install(tDateEnd);
 		getContentPane().add(tDateEnd);
 		
 		// Heure de fin
 		tHeureEnd = new JFormattedTextField();
-		tHeureEnd.setFont(new Font("Dialog", Font.PLAIN, 18));
-		tHeureEnd.setBounds(202, 70, 53, 19);
-		formH.install(tHeureEnd);
+		tHeureEnd.setFont(new Font("Dialog", Font.PLAIN, 15));
+		tHeureEnd.setBounds(202, 70, 64, 19);
+		MaskFormatter formHeureEnd = new MaskFormatter("##:##");
+		formHeureEnd.install(tHeureEnd);
 		getContentPane().add(tHeureEnd);
 		
 		cListNumero = new JComboBox();
@@ -181,8 +185,9 @@ public class DialogRetroAnalyse extends JDialog implements WindowListener,Action
 		case "INOUT":
 			try 
 			{
+				
 				// on lance la procédure de In Out
-				Vector v = RetroAnalyseCode.getInOut((String)cListNumero.getSelectedItem());
+				Vector v = RetroAnalyseCode.getInOut((String)cListNumero.getSelectedItem(),tDateStart.getText(),tHeureStart.getText(),tDateEnd.getText(),tHeureEnd.getText());
 				// on lance la génération du document
 				DocRetroZoller zoller = new DocRetroZoller(v,(String)cListNumero.getSelectedItem());
 					
@@ -191,6 +196,9 @@ public class DialogRetroAnalyse extends JDialog implements WindowListener,Action
 				// TODO Auto-generated catch block
 				JOptionPane.showMessageDialog(null, e.getMessage());
 			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				JOptionPane.showMessageDialog(null, e.getMessage());
+			} catch (DateHeureException e) {
 				// TODO Auto-generated catch block
 				JOptionPane.showMessageDialog(null, e.getMessage());
 			}

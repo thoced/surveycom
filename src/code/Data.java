@@ -14,6 +14,8 @@ public class Data
 	
 	private String num;
 	private int total;
+	private int nbin;
+	private int nbout; // nbout se crée en soustrayant le total par le nbin
 
 	public Data() 
 	{
@@ -36,6 +38,22 @@ public class Data
 		this.total = total;
 	}
 
+	public int getNbin() {
+		return nbin;
+	}
+
+	public void setNbin(int nbin) {
+		this.nbin = nbin;
+	}
+
+	public int getNbout()
+	{
+		// on le créé  à la volé
+		return this.total - this.nbin;
+		
+	}
+
+	
 	
 	
 	

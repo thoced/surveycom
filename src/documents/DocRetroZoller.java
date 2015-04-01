@@ -54,9 +54,10 @@ public class DocRetroZoller
 			 Data data = (Data)it.next();
 			// création d'un paragraphe
 			 XWPFParagraph paragraph2 = documentWord.createParagraph();
+			 paragraph2.setSpacingAfterLines(5);
 			 // run
 			 XWPFRun run2 = paragraph2.createRun();	 
-			 run2.setText(data.getNum() + "					" + data.getTotal());
+			 run2.setText(data.getNum() + "					TOTAL : " + data.getTotal() + "  IN : " + data.getNbin() +"  OUT : " + data.getNbout() + "\r");
 			 
 		 }
 		
