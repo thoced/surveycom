@@ -84,12 +84,13 @@ public class RetroAnalyseCode
 	
 	
 		// requete pour l'affichage de l'ensemble des 
-		String sql = "select num_caller NUM ,sum(nbin) TOTAL, nbin "
-				+ "from (select num_caller, count(num_caller) nbin from t_communication  where num_receiver = ? AND start_time BETWEEN ? AND ? group by num_caller "
+		String sql = "select num_caller num ,sum(nbin) nbin, sum(nbout) nbout,(nbin + nbout) total "
+				+ "from (select num_caller, count(num_caller) nbin,0 nbout from t_communication  where num_receiver = ? AND start_time BETWEEN ? AND ? group by num_caller "
 				+ "union "
-				+ "select num_receiver, count(num_receiver) nbout from t_communication  where num_caller = ? AND start_time BETWEEN ? AND ? group by num_receiver) "
-				+ "group by num_caller order by TOTAL desc";
+				+ "select num_receiver, 0, count(num_receiver) nbout from t_communication  where num_caller = ? AND start_time BETWEEN ? AND ? group by num_receiver) "
+				+ "group by num_caller order by total desc";
 		
+			   
 		
 		
 		// creation du statement
@@ -111,13 +112,15 @@ public class RetroAnalyseCode
 			// instance du data
 			Data data = new Data();
 			// reception des données depuis la requete
-			String num = result.getString("NUM");
-			int total = result.getInt("TOTAL");
+			String num = result.getString("num");
 			int nbin = result.getInt("nbin");
+			int nbout = result.getInt("nbout");
+			int total = result.getInt("total");
 		
 			data.setNum(num);
-			data.setTotal(total);
 			data.setNbin(nbin);
+			data.setNbout(nbout);
+			data.setTotal(total);
 			
 			
 			// on inscrit la valeur dans le vecteur 
