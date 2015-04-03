@@ -19,7 +19,7 @@ public class RetroAnalyseCode
 	{
 		List<String> buff = new ArrayList<String>();
 		
-		String sql = "select gsm from t_identification";
+		String sql = "select gsm from t_identification order by gsm asc";
 		// on crée le statement
 		Statement st = Transaction.getCon().createStatement();
 		// exécution de la requete
@@ -84,7 +84,7 @@ public class RetroAnalyseCode
 	
 	
 		// requete pour l'affichage de l'ensemble des 
-		String sql = "select num_caller num ,sum(nbin) nbin, sum(nbout) nbout,(nbin + nbout) total "
+		String sql = "select num_caller num ,sum(nbin) nbin, sum(nbout) nbout,(sum(nbin) + sum(nbout)) total "
 				+ "from (select num_caller, count(num_caller) nbin,0 nbout from t_communication  where num_receiver = ? AND start_time BETWEEN ? AND ? group by num_caller "
 				+ "union "
 				+ "select num_receiver, 0, count(num_receiver) nbout from t_communication  where num_caller = ? AND start_time BETWEEN ? AND ? group by num_receiver) "
